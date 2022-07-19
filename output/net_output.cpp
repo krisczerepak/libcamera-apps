@@ -33,7 +33,7 @@ NetOutput::NetOutput(VideoOptions const *options) : Output(options)
 		saddr_ptr_ = (const sockaddr *)&saddr_; // sendto needs these for udp
 		sockaddr_in_size_ = sizeof(sockaddr_in);
 	}
-	else if (strcmp(protocol, "tcp") == 0)
+	else if (strcmp(protocol, "tcp") == 0) //executes if the protocol is equal to tcp
 	{
 		// WARNING: I've not actually tried this yet...
 		if (options->listen)

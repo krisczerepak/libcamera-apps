@@ -18,13 +18,11 @@ using libcamera::Stream;
 class LibcameraJpegApp : public LibcameraApp
 {
 public:
-	LibcameraJpegApp()
-		: LibcameraApp(std::make_unique<StillOptions>())
-	{
-	}
+	LibcameraJpegApp() : LibcameraApp(std::make_unique<StillOptions>()) {}
 
 	StillOptions *GetOptions() const
 	{
+		//The below static cast follows the format cast-name<type>(expression). Type is the target type of the conversion, expression is the avlue to be cast
 		return static_cast<StillOptions *>(options_.get());
 	}
 };
@@ -39,7 +37,7 @@ static void event_loop(LibcameraJpegApp &app)
 	app.StartCamera();
 	auto start_time = std::chrono::high_resolution_clock::now();
 
-	for (unsigned int count = 0; ; count++)
+	for (unsigned int count = 0;; count++)
 	{
 		LibcameraApp::Msg msg = app.Wait();
 		if (msg.type == LibcameraApp::MsgType::Quit)
@@ -83,24 +81,30 @@ static void event_loop(LibcameraJpegApp &app)
 
 int main(int argc, char *argv[])
 {
-	try
+	std::cout << "Input 1 to begin \n";
+	int hats = 1;
+	std::cin >> hats;
+	if (hats)
 	{
-		LibcameraJpegApp app;
-		StillOptions *options = app.GetOptions();
-		if (options->Parse(argc, argv))
+		try
 		{
-			if (options->verbose)
-				options->Print();
-			if (options->output.empty())
-				throw std::runtime_error("output file name required");
+			LibcameraJpegApp app;
+			StillOptions *options = app.GetOptions();
+			if (options->Parse(argc, argv))
+			{
+				if (options->verbose)
+					options->Print();
+				if (options->output.empty()) //Operator is equivalent to (*it).mem this is identical to (it->mem)
+					throw std::runtime_error("output file name required");
 
-			event_loop(app);
+				event_loop(app);
+			}
 		}
-	}
-	catch (std::exception const &e)
-	{
-		std::cerr << "ERROR: *** " << e.what() << " ***" << std::endl;
-		return -1;
+		catch (std::exception const &e)
+		{
+			std::cerr << "ERROR: *** " << e.what() << " ***" << std::endl;
+			return -1;
+		}
 	}
 	return 0;
 }

@@ -18,6 +18,8 @@ struct StillOptions : public Options
 		using namespace boost::program_options;
 		// clang-format off
 		options_.add_options()
+			("hash_brown", value<bool>(&kcz_hashbrown)->default_value(false)->implicit_value(true),
+			"Produces a reminder on how delicious hash browns are")
 			("quality,q", value<int>(&quality)->default_value(93),
 			 "Set the JPEG quality parameter")
 			("exif,x", value<std::vector<std::string>>(&exif),
@@ -52,6 +54,7 @@ struct StillOptions : public Options
 		// clang-format on
 	}
 
+	bool kcz_hashbrown;
 	int quality;
 	std::vector<std::string> exif;
 	uint64_t timelapse;
