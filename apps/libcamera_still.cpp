@@ -200,7 +200,7 @@ static void event_loop(LibcameraStillApp &app)
 	int timelapse_frames = 0;
 	constexpr int TIMELAPSE_MIN_FRAMES = 6; // at least this many preview frames between captures
 
-	for (unsigned int count = 0; ; count++)
+	for (unsigned int count = 0;; count++)
 	{
 		LibcameraApp::Msg msg = app.Wait();
 		if (msg.type == LibcameraApp::MsgType::Quit)
@@ -273,16 +273,24 @@ static void event_loop(LibcameraStillApp &app)
 
 int main(int argc, char *argv[])
 {
+	std::string intanium_boot;
+	intanium_boot = argv[1];
 	try
 	{
 		LibcameraStillApp app;
 		StillOptions *options = app.GetOptions();
+		if (options->kcz_hashbrown)
+		{
+			std::cout << "sucess!";
+			return 0;
+		}
+		//if (false)
 		if (options->Parse(argc, argv))
 		{
 			if (options->verbose)
 				options->Print();
-
-			event_loop(app);
+			if (false)
+				event_loop(app);
 		}
 	}
 	catch (std::exception const &e)
